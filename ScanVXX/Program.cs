@@ -7,6 +7,7 @@ using System.Net;
 using Newtonsoft.Json;
 using ScanVXX.BulkLoad;
 using ScanVXX.Models;
+using ScanVXX.Web;
 
 namespace ScanVXX
 {
@@ -116,7 +117,7 @@ namespace ScanVXX
 
             for (int i = 0; i < companies.Count(); i++)
             {
-                string sPage = GetResult(companies[i].URI);
+                string sPage = WebPage.Get(companies[i].URI);
                 sPage = sPage.Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ");
 
                 if (sPage == "N/A") continue;
@@ -196,7 +197,7 @@ namespace ScanVXX
         }
 
         private static string[] GetRows(string uri) {
-            string sPage = GetResult(uri);
+            string sPage = WebPage.Get(uri);
 
             sPage = sPage.Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ");
 
@@ -437,14 +438,14 @@ namespace ScanVXX
 
             //example of complete uri
             //http://real-chart.finance.yahoo.com/table.csv?s=VXX&d=5&e=27&f=2015&g=d&a=0&b=30&c=2009&ignore=.csv
-            
-            string uriString = GetUri(symbol, date);
+
+            string uriString = WebPage.GetUri(symbol, date, numberOfMonths);
  
             string today = DateTime.Now.Date.ToString().Substring(0, date.ToString().IndexOf(' '));
             string dayFile = string.Format(@"C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\Files\QuickExit {0} - {1}.csv", symbol.ToUpper(), today.Replace('/', '-'));
 
             //string[] dailyArray = System.IO.File.ReadAllLines(@"../../../Files/vxxtable.csv");
-            string sPage = GetResult(uriString);
+            string sPage = WebPage.Get(uriString);
             string[] dailyArray = sPage.Split('\n');
             List<Daily> dailies = GetDailies(dailyArray);
             dailies.Reverse();
@@ -601,24 +602,14 @@ namespace ScanVXX
         { 
             var date = DateTime.Now;
 
-            string uriString = GetUri(symbol, startDate);
+            string uriString = WebPage.GetUri(symbol, startDate, numberOfMonths);
 
             //string[] dailyArray = System.IO.File.ReadAllLines(@"../../../Files/vxxtable.csv");
-            string sPage = GetResult(uriString);
+            string sPage = WebPage.Get(uriString);
             string[] dailyArray = sPage.Split('\n');
             List<Daily> dailies = GetDailies(dailyArray);
             dailies.Reverse();
             return dailies;
-        }
-
-        //example of complete uri
-        //http://real-chart.finance.yahoo.com/table.csv?s=VXX&d=5&e=27&f=2015&g=d&a=0&b=30&c=2009&ignore=.csv
-        private static string GetUri(string symbol, DateTime date)
-        {
-            return string.Format("{0}{1}&d={2}&e={3}&f={4}&g=d&a={5}&b={6}&c={7}&ignore=.csv",
-                      @"http://real-chart.finance.yahoo.com/table.csv?s=", symbol, 
-                      date.Month, date.Day, date.Year,
-                      date.AddMonths(numberOfMonths - 1).Month, date.AddDays(-1).AddMonths(numberOfMonths).Day, date.AddMonths(numberOfMonths).Year);
         }
 
         //example of complete uri
@@ -630,25 +621,6 @@ namespace ScanVXX
                       date.Month, date.Day, date.Year,
                       date.AddMonths(numberOfMonths - 1).Month, date.AddDays(-1).AddMonths(numberOfMonths).Day, date.AddMonths(numberOfMonths).Year);
         }
-
-        private static string GetResult(string uri)
-        {
-            string results = "N/A";
-
-            try
-            {
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
-                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
-
-                StreamReader sr = new StreamReader(resp.GetResponseStream());
-                results = sr.ReadToEnd();
-                sr.Close();
-            }
-            catch (Exception ex)
-            { }
-
-            return results;
-        } 
 
         public static void WriteOutput(StreamWriter sw, Daily today, Daily current, decimal value, decimal low)
         {
@@ -692,17 +664,6 @@ namespace ScanVXX
             return dailies;
         }
 
-        public class Daily
-        {
-            public DateTime Date { get; set;}
-            public decimal Open { get; set;}
-            public decimal High { get; set;}
-            public decimal Low { get; set;}
-            public decimal  Close { get; set;}
-            public int Volume { get; set;}
-            public decimal AdjClose { get; set;}
-        }
-
         public static void RunPatientxExit(string symbol)
         {
             int skip = 0;
@@ -741,7 +702,7 @@ namespace ScanVXX
             string today = DateTime.Now.Date.ToString().Substring(0, date.ToString().IndexOf(' '));
             string dayFile = string.Format(@"C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\Files\LongHold {0} - {1}.csv", symbol.ToUpper(), today.Replace('/', '-'));
 
-            string sPage = GetResult(uriString);
+            string sPage = WebPage.Get(uriString);
             string[] dailyArray = sPage.Split('\n');
             List<Daily> dailies = GetDailies(dailyArray);
             dailies.Reverse();
