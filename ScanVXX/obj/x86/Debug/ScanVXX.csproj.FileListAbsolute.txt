@@ -1,0 +1,13 @@
+c:\users\jim\documents\visual studio 2010\Projects\ScanVXX\ScanVXX\bin\Debug\ScanVXX.exe
+c:\users\jim\documents\visual studio 2010\Projects\ScanVXX\ScanVXX\bin\Debug\ScanVXX.pdb
+c:\users\jim\documents\visual studio 2010\Projects\ScanVXX\ScanVXX\obj\x86\Debug\ScanVXX.exe
+c:\users\jim\documents\visual studio 2010\Projects\ScanVXX\ScanVXX\obj\x86\Debug\ScanVXX.pdb
+C:\Users\Jim\documents\visual studio 2010\Projects\ScanVXX\ScanVXX\obj\x86\Debug\ScanVXX.csprojResolveAssemblyReference.cache
+C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\ScanVXX\obj\x86\Debug\ScanVXX.exe
+C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\ScanVXX\obj\x86\Debug\ScanVXX.pdb
+C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\ScanVXX\bin\Debug\ScanVXX.exe
+C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\ScanVXX\bin\Debug\ScanVXX.pdb
+C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\ScanVXX\obj\x86\Debug\ScanVXX.csprojResolveAssemblyReference.cache
+C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\ScanVXX\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\ScanVXX\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jim\Documents\Visual Studio 2012\Projects\ScanVXX\ScanVXX\bin\Debug\ScanVXX.exe.config
