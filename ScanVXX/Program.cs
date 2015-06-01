@@ -43,38 +43,29 @@ namespace ScanVXX
             //RunQuickExit(symbol);
             //RunPatientExit(symbol);
 
+            //========> Get Sectors
             Sectors sectors = GetSectors();
+
+            //using (BulkLoadSector bls = new BulkLoadSector())
+            //{
+            //    var dt = bls.ConfigureDataTable();
+            //    dt = bls.LoadDataTableWithSectors(sectors, dt);
+            //    bls.BulkCopy<Sectors>(dt);
+            //}
             Console.WriteLine("Got Sectors: {0}", DateTime.Now);
 
-            Sectors bulkSectors = new Sectors();
-
-            for (int i = 0; i < sectors.Count; i++)
-            {
-                bulkSectors.Add(sectors[i]);
-            }
-
-            BulkLoadSector bls = new BulkLoadSector();
-
-            var dt = bls.ConfigureDataTable();
-
-            dt = bls.LoadDataTableWithSectors(bulkSectors, dt);
-
-            bls.BulkCopy<Sectors>(dt);
-            
+            //========> Get Industries
             Industries industries = GetIndustries(sectors);
 
-            //Industries bulkIndustries = new Industries();
-            //for (int i = 0; i < industries.Count; i++)
+            //using (BulkLoadIndustry bli = new BulkLoadIndustry())
             //{
-            //    bulkIndustries.Add(industries[i]);
+            //    var dti = bli.ConfigureDataTable();
+            //    dti = bli.LoadDataTableWithIndustries(industries, dti);
+            //    bli.BulkCopy<Industries>(dti);
             //}
-
-            BulkLoadIndustry bli = new BulkLoadIndustry();
-            var dti = bli.ConfigureDataTable();
-            dti = bli.LoadDataTableWithIndustries(industries, dti);
-            bli.BulkCopy<Industries>(dti);
-
             Console.WriteLine("Got Industries: {0}", DateTime.Now);
+
+            //========> Get Companies
             Companies companies = GetCompanies(industries);
             Console.WriteLine("Got Companies: {0}", DateTime.Now);
 
@@ -82,6 +73,13 @@ namespace ScanVXX
             Console.WriteLine("Got Exchanges: {0}", DateTime.Now);
 
             //Companies cs = companies.Where(c => cExchange != null);
+            using (BulkLoadCompany blc = new BulkLoadCompany())
+            {
+                var dtc = blc.ConfigureDataTable();
+                dtc = blc.LoadDataTableWithIndustries(companies, dtc);
+                blc.BulkCopy<Companies>(dtc);
+                Console.WriteLine("Got Companies: {0}", DateTime.Now);
+            }
 
             string json = JsonConvert.SerializeObject(companies);
             using( StreamWriter sw = new StreamWriter("C:/Temp/companies.txt") )

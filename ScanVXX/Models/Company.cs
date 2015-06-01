@@ -25,6 +25,10 @@ namespace ScanVXX.Models
             Companies companies = new Companies();
 
             string[] stringSeparators = new string[] { "<td" };
+            
+            DateTime date = DateTime.Now;
+
+            Dictionary<string, DateTime> myDic = new Dictionary<string, DateTime>();
 
             for (int i = 5; i < rows.Length; i++)
             {
@@ -34,8 +38,6 @@ namespace ScanVXX.Models
                 {
                     URI = columns[1].Split('<', '>')[4].Substring(columns[1].Split('<', '>')[4].LastIndexOf("http")).Replace("\"", ""),
                     Name = columns[1].Split('<', '>')[5],
-                    GeneralInfoURI = columns[1].Split('<', '>')[8].LastIndexOf("http") >= 0 ? columns[1].Split('<', '>')[8].Substring(columns[1].Split('<', '>')[8].LastIndexOf("http")).Replace("\"", "") : "",
-                    Symbol = columns[1].Split('(', ')')[1].Split('<', '>')[0] == "" ? columns[1].Split('(', ')')[1].Split('<', '>')[2] : columns[1].Split('(', ')')[1].Split('<', '>')[0],
                     OneDayPriceChangePercent = ScrubData(columns[2].Split('<', '>')[3]),
                     MarketCap = columns[3].Split('<', '>')[3],
                     PriceToEarnings = ScrubData(columns[4].Split('<', '>')[3]),
@@ -45,13 +47,26 @@ namespace ScanVXX.Models
                     PriceToBookValue = ScrubData(columns[8].Split('<', '>')[3]),
                     NetProfitMarginPercentMRQ = ScrubData(columns[9].Split('<', '>')[3]),
                     PriceToFreeCashFlowMRQ = ScrubData(columns[10].Split('<', '>')[3]),
+                    Symbol = columns[1].Split('(', ')')[1].Split('<', '>')[0] == "" ? columns[1].Split('(', ')')[1].Split('<', '>')[2] : columns[1].Split('(', ')')[1].Split('<', '>')[0],
                     Sector = sector,
                     SectorId = 0,
                     Industry = industry,
-                    IndustryId = 0
+                    IndustryId = 0,
+                    Exchange = Exchange,
+                    ExchangeId = 0,
+                    GeneralInfoURI = columns[1].Split('<', '>')[8].LastIndexOf("http") >= 0 ? columns[1].Split('<', '>')[8].Substring(columns[1].Split('<', '>')[8].LastIndexOf("http")).Replace("\"", "") : "",
+                    Date = date,
                 };
 
-                companies.Add(company);
+                try
+                {
+                    myDic.Add(company.Name + " " + company.Symbol, date); //  + " " + company.Symbol);
+                    companies.Add(company);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(company.Name + ": " +ex.Message);
+                }
             }
             return companies;
         }

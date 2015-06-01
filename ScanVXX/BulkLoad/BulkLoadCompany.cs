@@ -6,32 +6,32 @@ using ScanVXX.Models;
 
 namespace ScanVXX.BulkLoad
 {
-    public class BulkLoadIndustry : BaseBulkLoad, IDisposable
+    class BulkLoadCompany : BaseBulkLoad, IDisposable
     {
         private static readonly string[] ColumnNames = new string[]
             {
                 "Date", "LongTermDebtToEquity", "DivYieldPercent",
                 "MarketCap", "Name", "URI", "NetProfitMarginPercentMRQ", 
                 "OneDayPriceChangePercent", "PriceToBookValue", "PriceToEarnings",
-                "PriceToFreeCashFlowMRQ", "ROEPercent", "Sector", 
-                "SectorId", "MoreInfoLink"
+                "PriceToFreeCashFlowMRQ", "ROEPercent", "Symbol", "Sector", 
+                "SectorId", "Industry", "IndustryId", "Exchange", "ExchangeId", "GeneralInfoURI"
             };
 
-        public BulkLoadIndustry() : base(ColumnNames)
+        public BulkLoadCompany() : base(ColumnNames)
         {
 
         }
 
-        public DataTable LoadDataTableWithIndustries(IEnumerable<Industry> dStats, DataTable dt)
+        public DataTable LoadDataTableWithIndustries(IEnumerable<Company> dStats, DataTable dt)
         {
             foreach (var value in dStats)
             {
                 var sValue = value.Date + "^" + value.LongTermDebtToEquity + "^" + value.DivYieldPercent
-                              + "^" + value.MarketCap + "^" + value.Name + "^" + value.URI + "^" + value.NetProfitMarginPercentMRQ 
-                              + "^" + value.OneDayPriceChangePercent + "^" + value.PriceToBookValue + "^" + value.PriceToEarnings 
-                              + "^" + value.PriceToFreeCashFlowMRQ + "^" + value.ROEPercent + "^" + value.Sector 
-                              + "^" + value.SectorId + "^" + value.MoreInfoLink;
-
+                                              + "^" + value.MarketCap + "^" + value.Name + "^" + value.URI + "^" + value.NetProfitMarginPercentMRQ
+                                              + "^" + value.OneDayPriceChangePercent + "^" + value.PriceToBookValue + "^" + value.PriceToEarnings
+                                              + "^" + value.PriceToFreeCashFlowMRQ + "^" + value.ROEPercent + "^" + value.Symbol + "^" + value.Sector
+                                              + "^" + value.SectorId + "^" + value.Industry + "^" + value.IndustryId
+                                              + "^" + value.Exchange + "^" + value.ExchangeId + "^" + value.GeneralInfoURI;
                 DataRow row = dt.NewRow();
 
                 row.ItemArray = sValue.Split('^');
@@ -56,7 +56,7 @@ namespace ScanVXX.BulkLoad
         // NOTE: Leave out the finalizer altogether if this class doesn't 
         // own unmanaged resources itself, but leave the other methods
         // exactly as they are. 
-        ~BulkLoadIndustry()
+        ~BulkLoadCompany()
         {
             // Finalizer calls Dispose(false)
             Dispose(false);

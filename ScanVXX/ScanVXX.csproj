@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BulkLoad\BaseBulkLoad.cs" />
+    <Compile Include="BulkLoad\BulkLoadCompany.cs" />
     <Compile Include="BulkLoad\BulkLoadIndustry.cs" />
     <Compile Include="BulkLoad\BulkLoadSector.cs" />
     <Compile Include="Models\BaseData.cs" />
